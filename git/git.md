@@ -8,9 +8,17 @@
 
 <img src="git.assets/1776509502684.png" alt="1776509502684" style="zoom: 50%;" />
 
+---
+
+
+
 2.拉取
 
 ![1776509743733](git.assets/1776509743733.png)
+
+---
+
+
 
 3.提交
 
@@ -32,113 +40,60 @@
 
 
 
-合并
+(3)标记+提交+上传
 
  Git 只合并 ** 已经提交（commit）** 的版本，暂存区的内容是不能合并的。 
 
- 如果你想在 GitHub 上备份你的 `base` 分支、或者让别人也能看到你的工作，就执行  git push origin base 
-
-## 把 base 分支 → 合并到 main 分支
-
-## 1. 先切换到【你要合并进去的目标分支】
-
-```
-git checkout main
-```
-
-## 2. 执行合并命令（把 base 合进来）
-
-```
-git merge base
-```
-
-## 3. 推送到 GitHub（让云端也更新）
-
-```
-git push origin main
-```
-
 commit必须由-m否则不让提交
 
-push上传
+ 如果你想在 GitHub 上备份你的 `base` 分支、或者让别人也能看到你的工作，就执行  git push origin base 
 
-时间轴
+把base合并到main
 
-不小心将重要文件删除了 eg:readme.md被删了
+<img src="git.assets/1776520211773.png" alt="1776520211773" style="zoom:50%;" />
+
+<img src="git.assets/1776518419275-1776520366039.png" alt="1776518419275" style="zoom: 50%;" />
+
+<img src="git.assets/1776518503518-1776520366039.png" alt="1776518503518" style="zoom:50%;" />
+
+这里本地仓库和远程仓库没有建立连接
+
+![1776518696013](git.assets/1776518696013-1776520366039.png)
+
+
+
+
+
+![1776519230899](git.assets/1776519230899-1776520366039.png)
+
+![1776519432853](git.assets/1776519432853-1776520366039.png)![1776520590899](git.assets/1776520590899.png)
+
+![1776519627491](git.assets/1776519627491-1776520366039.png)
+
+---
+
+4.修改
+
+（1）add/commit之前
 
 ![1776514216392](git.assets/1776514216392.png)
 
+（2）执行add
 
+![1776521034915](git.assets/1776521034915.png)
 
-### 1. 改了文件
-
-**状态：红色，未暂存**
-
-→ 想撤销：
-
-bash
-
-
-
-运行
-
-
-
-
-
-
-
-
+（3）执行了commit要返回
 
 ```
-git restore 文件名
+回到add之前并删除自己的修改
+git reset --hard HEAD~1
+回到暂存区commit之前
+git reset --soft HEAD~1
 ```
 
-### 2. 执行了 git add
-
-**状态：绿色，已暂存**
-
-→ 想撤销 add（回到修改后的状态，不丢代码）：
-
-bash
 
 
-
-运行
-
-
-
-
-
-
-
-
-
-```
-git restore --staged 文件名
-```
-
-### 3. 执行了 commit
-
-→ 想撤销版本：
-
-bash
-
-
-
-运行
-
-
-
-
-
-
-
-
-
-```
-git reset
-```
+<img src="git.assets/1776521923436.png" alt="1776521923436" style="zoom:50%;" />
 
  git revert -m 1 HEAD 
 
@@ -280,7 +235,7 @@ main是正式版
 
 
 
-
+ 对！**每次修改文件后** 
 
 
 
