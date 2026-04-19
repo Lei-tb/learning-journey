@@ -74,22 +74,20 @@ commit必须由-m否则不让提交
 
 ---
 
-4.修改
+4.修改(首先肯定是不想让自己修改的代码因为撤销而消失)
 
-（1）add/commit之前
+你在哪个分支上执行 git add /commit这些修改就归哪个分支
 
-![1776514216392](git.assets/1776514216392.png)
-
-（2）执行add
+（1）add之后 commit之前 撤销add   
 
 ![1776521034915](git.assets/1776521034915.png)
 
-（3）执行了commit要返回
+（2）commit之后，push/合并之前
 
 ```
-回到add之前并删除自己的修改
-git reset --hard HEAD~1
-回到暂存区commit之前
+commit之后修改就会从暂存区拿出，git reset是清除暂存区但是没有数据
+
+回到暂存区commit之前，add之后
 git reset --soft HEAD~1
 ```
 
@@ -97,25 +95,57 @@ git reset --soft HEAD~1
 
 <img src="git.assets/1776521923436.png" alt="1776521923436" style="zoom:50%;" />
 
-（4）push到远程仓库
+（3）合并之后，push之前
 
-拉取其他小伙伴提交的代码，防止被覆盖
+```
+git checkout main
+git merge base
+```
+
+或者
 
 ![1776525016906](git.assets/1776525016906.png)
 
-这里只会撤销main到上次提交，base不会被改变
+
+
+```
+git reset --hard HEAD~1
+```
+
+
+
+（4）push之后 撤销push   这里只会撤销main到上次提交，base不会被改变
+
+```
+git revert -m 1 HEAD   # 1. 本地生成撤销提交
+git push    # 2. 把撤销提交推到远程
+```
 
 ![](git.assets/1776525041507.png)
 
-![1776525154168](git.assets/1776525154168.png)
-
-你在哪个分支上执行 git add /commit这些修改就归哪个分支
-
-
+总结：
 
  main分支里面是整合的完整代码，每个人负责一块，有问题，main函数回滚一下，相应的人直接改 
 
  分支分工 → 单独开发 → 合并整合 → 出错回滚 
+
+如果push之后发现有问题
+
+## 1. 如果你是 **普通提交 push 后错了**
+
+```
+git revert HEAD
+git push
+```
+
+## 2. 如果你是 **合并（merge/pull）push 后错了**
+
+```
+git revert -m 1 HEAD
+git push
+```
+
+
 
 
 
