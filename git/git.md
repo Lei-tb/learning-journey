@@ -4,6 +4,20 @@
 
 1.新建工程
 
+1. Public（公开仓库）
+
+所有人都可以**访问和下载**，**仅**所有者和协作者才能**提交代码，其他人需要审核**
+
+2. Private（私有仓库）
+
+仅所有者和协作者才能**访问，下载和提交代码**
+
+3. .gitignore里面写了什么就忽略什么， 永远不提交、不上传到 GitHub。
+
+4. 没有 License = 别人啥都不能干
+
+   MIT = 随便用，保留署名，作者不担责 
+
 ![1776509007547](git.assets/1776509007547.png)
 
 <img src="git.assets/1776509502684.png" alt="1776509502684" style="zoom: 50%;" />
@@ -42,13 +56,7 @@
 
 (3)标记+提交+上传
 
- Git 只合并 ** 已经提交（commit）** 的版本，暂存区的内容是不能合并的。 
-
-commit必须由-m否则不让提交
-
- 如果你想在 GitHub 上备份你的 `base` 分支、或者让别人也能看到你的工作，就执行  git push origin base 
-
-把base合并到main
+ Git 只合并 **已经提交（commit）** 的版本，暂存区的内容是不能合并的。 
 
 `git commit --amend` **作用：把 “本次修改” 追加到 “上一次 commit” 里，合并成一条提交！**
 
@@ -64,81 +72,111 @@ commit必须由-m否则不让提交
 
 
 
+![1776646007210](git.assets/1776646007210.png)
 
+ 让第三方软件能够操作我的github账号 
+
+![1776646296622](git.assets/1776646296622.png)
+
+1. `Public repositories`
+
+- 权限：**只能对所有公开仓库做「只读操作」**
+- 限制：不能对你自己的任何仓库进行提交、修改、删除等写操作
+
+2. `All repositories`
+
+- 权限：对你账号下的 **所有仓库（包括现在和未来新建的）** 都开放你设置的权限，同时也能只读所有公开仓库
+
+3. `Only select repositories`
+
+- 权限：**只对你手动勾选的仓库生效**（最多 50 个），其他仓库完全没权限
 
 ![1776519230899](git.assets/1776519230899-1776520366039.png)
 
-![1776519432853](git.assets/1776519432853-1776520366039.png)![1776520590899](git.assets/1776520590899.png)
+**`Contents: Read and write`**：这是你 `git push` 提交代码必须的权限，对代码进行读写
+
+**`Metadata: Read-only`**： 描述这个仓库的 “额外信息”  eg: 仓库的提交记录、分支信息 / 贡献者列表 
+
+![1776519432853](git.assets/1776519432853-1776520366039.png)
 
 ![1776519627491](git.assets/1776519627491-1776520366039.png)
 
 ---
 
-4.修改(首先肯定是不想让自己修改的代码因为撤销而消失)
-
-你在哪个分支上执行 git add /commit这些修改就归哪个分支
+4.修改(首先肯定是不想让自己修改的代码因为撤销而消失)于是建立一个test 空repo
 
 （1）add之后 commit之前 撤销add   
 
-![1776521034915](git.assets/1776521034915.png)
+回到add之前并且保留修改内容
+
+![1776647589376](git.assets/1776647589376.png)
 
 （2）commit之后，push/合并之前
 
+1. --soft（最温和）
+
+**回到目标版本 + 保留所有后来写的代码 + 保留暂存区**
+
+2. --mixed（默认）
+
+**回到目标版本 + 保留所有后来写的代码 + 清空暂存区**
+
+3. --hard（危险！）
+
+**回到目标版本 + 删除所有后来写的代码 + 彻底清空！**
+
 ```
-commit之后修改就会从暂存区拿出，git reset是清除暂存区但是没有数据
-
-回到暂存区commit之前，add之后
-git reset --soft HEAD~1
+git reset --soft HEAD~1/26db1c6
+回到commit之前，add之后，并且没有改变版本号
 ```
 
+![1776648070433](git.assets/1776648070433.png)
 
-
-<img src="git.assets/1776521923436.png" alt="1776521923436" style="zoom:50%;" />
+![1776648086334](git.assets/1776648086334.png)
 
 （3）合并之后，push之前
 
+ 回到上一次提交并删除修改 不改变版本 
+
+![1776648563466](git.assets/1776648563466.png)
+
+![1776648573544](git.assets/1776648573544.png)
+
 ```
-git checkout main
-git merge base
+git reset --hard 26db1c6
 ```
 
-或者
+
+
+![1776648602325](git.assets/1776648602325.png)
+
+or
 
 ![1776525016906](git.assets/1776525016906.png)
 
-
-
-```
-git reset --hard HEAD~1
-```
-
-
-
-（4）push之后 撤销push   这里只会撤销main到上次提交，base不会被改变
+![1776652313810](git.assets/1776652313810.png)
 
 ```
-git revert -m 1 HEAD   # 1. 本地生成撤销提交
-git push    # 2. 把撤销提交推到远程
+git reset --hard 26db1c6
 ```
 
-![](git.assets/1776525041507.png)
 
-总结：
 
- main分支里面是整合的完整代码，每个人负责一块，有问题，main函数回滚一下，相应的人直接改 
+（4）push之后 撤销push   
 
- 分支分工 → 单独开发 → 合并整合 → 出错回滚 
-
-如果push之后发现有问题
-
-## 1. 如果你是 **普通提交 push 后错了**
+这里还可以用,但是不推荐团队使用， **删除历史、强行覆盖** 的时候才会被拒绝： 
 
 ```
-git revert HEAD
-git push
+ git reset --hard 26db1c6
+ 
+ git push origin main -f 或者  git push -f   #远程默认orgin,分支在main/base 就会推到 origin main/base
 ```
 
-## 2. 如果你是 **合并（merge/pull）push 后错了**
+revert会参考版本和他的父版本修改了什么，直接反向修改
+
+![1776655657754](git.assets/1776655657754.png)
+
+2. 如果你是 **合并（merge/pull）push 后错了**
 
 ```
 git revert -m 1 HEAD
